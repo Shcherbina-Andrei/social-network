@@ -1,0 +1,13 @@
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+
+  width: 500px;
+
+  padding: 50px;
+
+  background-color: var(--additional-bg-color);
+
+  border-radius: 6%;
+}
