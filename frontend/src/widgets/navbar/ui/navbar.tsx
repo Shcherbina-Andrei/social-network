@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { FC } from 'react';
 import styles from './navbar.module.scss';
+import SearchIcon from '@/shared/assets/icons/search.svg';
+import NotificationIcon from '@/shared/assets/icons/notification.svg';
+import { Routes } from '@/shared/router/routes';
 
 interface NavbarProps {
   className?: string;
@@ -13,11 +16,13 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
         <div>Social Network</div>
         <div className={styles.navbar__menu}>
           <button>English</button>
-          <Link href="/chats">Chats</Link>
-          <Link href="/chats">Search</Link>
-          <Link href="/chats">Messages</Link>
-          <Link href="/chats">Notifications</Link>
-          <div>Profile</div>
+          <Link href="/">
+            <SearchIcon width="30px" height="30px" />
+          </Link>
+          <Link href="/">
+            <NotificationIcon width="30px" height="30px" />
+          </Link>
+          <Link href={Routes.Profile}>Profile</Link>
         </div>
       </nav>
     </div>

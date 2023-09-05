@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import styles from './form.module.scss';
+import { Routes } from '@/shared/router/routes';
 
 const LoginForm = () => {
   return (
     <form className={styles.loginForm}>
       <h2 className={styles.loginForm__title}>Log In</h2>
       <p>
-        Don&apos;t have an account <Link href="/registration">Sign Up!</Link>
+        Don&apos;t have an account{' '}
+        <Link href={Routes.Registration}>Sign Up!</Link>
       </p>
 
       <label>

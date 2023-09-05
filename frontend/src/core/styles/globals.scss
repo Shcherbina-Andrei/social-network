@@ -92,7 +92,7 @@ body {
 
 .content-wrapper {
   display: flex;
-  width: 1440px;
+  width: var(--desktop-width);
 
   margin: 0 auto;
 }

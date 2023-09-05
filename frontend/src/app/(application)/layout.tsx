@@ -1,5 +1,6 @@
 import { Navbar } from '@/widgets/navbar';
 import { Sidebar } from '@/widgets/sidebar';
+import styles from './layout.module.scss';
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -7,7 +8,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <Navbar />
       <div className="content-wrapper">
         <Sidebar />
-        {children}
+        <main className={styles.main}>{children}</main>
       </div>
     </>
   );
