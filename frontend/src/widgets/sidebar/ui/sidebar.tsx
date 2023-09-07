@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import styles from './sidebar.module.scss';
 import Link from 'next/link';
+import ProfileIcon from '@/shared/assets/icons/profile.svg';
 import FeedIcon from '@/shared/assets/icons/feed.svg';
 import FriendIcon from '@/shared/assets/icons/people.svg';
 import MessagesIcon from '@/shared/assets/icons/messages.svg';
@@ -14,6 +15,9 @@ interface SidebarProps {
 const Sidebar: FC<SidebarProps> = ({ className }) => {
   return (
     <div className={`${styles.sidebar} ${className ? className : ''}`}>
+      <Link href={Routes.Profile}>
+        <ProfileIcon width="40px" height="40px" />
+      </Link>
       <Link href={Routes.Main}>
         <FeedIcon width="40px" height="40px" />
       </Link>
