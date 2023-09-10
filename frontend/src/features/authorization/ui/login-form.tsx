@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import styles from './form.module.scss';
 import { Routes } from '@/shared/router/routes';
+import { TextInput } from '@/shared/ui/text-input';
+import { Button } from '@/shared/ui/button';
 
 const LoginForm = () => {
   return (
@@ -13,21 +15,21 @@ const LoginForm = () => {
 
       <label>
         Email
-        <input />
+        <TextInput />
       </label>
 
       <label>
         Password
-        <input type="password" />
+        <TextInput type="password" />
       </label>
 
       <label>
-        <input type="checkbox" />
+        <TextInput type="checkbox" />
         Remember Me
       </label>
 
       <Link href="/">Forgot Password</Link>
-      <button>Log In</button>
+      <Button>Log In</Button>
     </form>
   );
 };

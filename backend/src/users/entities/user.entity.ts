@@ -1,19 +1,18 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
 
-export class UserEntity {
-  @Expose()
-  _id: string;
+export type UserDocument = HydratedDocument<User>;
 
-  @Expose()
+@Schema()
+export class User {
+  @Prop()
   username: string;
 
-  @Expose()
+  @Prop()
   email: string;
 
-  @Exclude()
+  @Prop()
   password: string;
-
-  constructor(partial: Partial<UserEntity>) {
-    Object.assign(this, partial);
-  }
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);

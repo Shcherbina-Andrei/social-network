@@ -1,17 +1,8 @@
-import {
-  Controller,
-  Body,
-  Post,
-  Get,
-  UseGuards,
-  ClassSerializerInterceptor,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Body, Post, Get, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { plainToInstance } from 'class-transformer';
-import { UserEntity } from './entities/user.entity';
+import { User } from './entities/user.entity';
 
 @Controller('users')
 export class UserController {
@@ -22,12 +13,8 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
-  async findAll(): Promise<UserEntity[]> {
-    const users = await this.userService.findAll();
-    return plainToInstance(UserEntity, users, {
-      excludeExtraneousValues: true,
-    });
+  async findAll(): Promise<User[]> {
+    return await this.userService.findAll();
   }
 }

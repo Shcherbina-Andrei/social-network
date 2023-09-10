@@ -15,20 +15,25 @@ interface SidebarProps {
 const Sidebar: FC<SidebarProps> = ({ className }) => {
   return (
     <div className={`${styles.sidebar} ${className ? className : ''}`}>
-      <Link href={Routes.Profile}>
-        <ProfileIcon width="40px" height="40px" />
+      <Link className={styles.sidebar__link} href={Routes.Profile}>
+        <ProfileIcon width="30px" height="30px" />
+        <span>Profile</span>
       </Link>
-      <Link href={Routes.Main}>
-        <FeedIcon width="40px" height="40px" />
+      <Link className={styles.sidebar__link} href={Routes.Main}>
+        <FeedIcon width="30px" height="30px" />
+        <span>Feed</span>
       </Link>
-      <Link href={Routes.Friends}>
-        <FriendIcon width="40px" height="40px" />
+      <Link className={styles.sidebar__link} href={Routes.Friends}>
+        <FriendIcon width="30px" height="30px" />
+        <span>Friends</span>
       </Link>
-      <Link href={Routes.Messages}>
-        <MessagesIcon width="40px" height="40px" />
+      <Link className={styles.sidebar__link} href={Routes.Messages}>
+        <MessagesIcon width="30px" height="30px" />
+        <span>Messages</span>
       </Link>
-      <Link href={Routes.Music}>
-        <MusicIcon width="40px" height="40px" />
+      <Link className={styles.sidebar__link} href={Routes.Music}>
+        <MusicIcon width="30px" height="30px" />
+        <span>Music</span>
       </Link>
     </div>
   );
