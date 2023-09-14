@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactNode, useMemo, useState } from 'react';
+import { FC, ReactNode, useMemo, useState, useEffect } from 'react';
 import {
   LOCAL_STORAGE_THEME_KEY,
   Theme,
@@ -11,26 +11,25 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-const defaultTheme =
-  (typeof window !== 'undefined' &&
-    (localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme)) ||
-  Theme.DARK;
-
 const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [theme, setTheme] = useState<Theme | null>(null);
 
-  const defaultProps = useMemo(
-    () => ({
-      theme,
-      setTheme,
-    }),
-    [theme]
-  );
+  useEffect(() => {
+    setTheme(
+      (localStorage.getItem(LOCAL_STORAGE_THEME_KEY) as Theme) || Theme.DARK
+    );
+  }, []);
 
   return (
-    <ThemeContext.Provider value={defaultProps}>
-      {children}
-    </ThemeContext.Provider>
+    <>
+      {!theme || !setTheme ? (
+        <div>loading</div>
+      ) : (
+        <ThemeContext.Provider value={{ theme, setTheme }}>
+          {children}
+        </ThemeContext.Provider>
+      )}
+    </>
   );
 };
 

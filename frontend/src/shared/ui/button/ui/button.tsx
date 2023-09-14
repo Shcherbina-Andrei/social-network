@@ -5,7 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'contained' | 'outlined';
 }
 
-const Button: FC<ButtonProps> = ({ variant, children, className }) => {
+const Button: FC<ButtonProps> = ({ variant, children, className, onClick }) => {
   return (
     <button
       className={`${styles.button} ${
@@ -13,6 +13,7 @@ const Button: FC<ButtonProps> = ({ variant, children, className }) => {
           ? styles.button__outlined
           : styles.button__contained
       } ${className ? className : ''}`}
+      onClick={onClick}
     >
       {children}
     </button>
