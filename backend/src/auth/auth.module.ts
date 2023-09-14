@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { UserModule } from 'src/users/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
+import { AccessTokenStrategy } from './strategies/accessToken.strategy';
+import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
 
 @Module({
   imports: [
@@ -13,11 +15,9 @@ import { ConfigModule } from '@nestjs/config';
     UserModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
 })
 export class AuthModule {}

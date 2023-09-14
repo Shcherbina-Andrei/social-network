@@ -11,6 +11,7 @@ export class PostService {
 
   async create(createPostDto: CreatePostDto): Promise<Post> {
     const createdPost = await this.postModel.create(createPostDto);
+    console.log(createdPost);
     return createdPost.save();
   }
 
