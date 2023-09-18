@@ -11,3 +11,27 @@
 
   border-radius: 6%;
 }
+
+.helpLink {
+  color: var(--green)
+}
+
+.form__field {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
+  width: 100%;
+}
+
+
+.form__error {
+  color: var(--attention-color);
+}
+
+.form__innerWrapper {
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+}

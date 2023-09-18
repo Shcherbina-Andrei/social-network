@@ -1,38 +1,83 @@
+'use client';
+
 import Link from 'next/link';
 import styles from './form.module.scss';
 import { Routes } from '@/shared/router/routes';
 import { TextInput } from '@/shared/ui/text-input';
+import { Button } from '@/shared/ui/button';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { registrationSchema } from '../model/validation-schemas/registration-schema';
+import { UserRegistration } from '../model/types/authorization';
 
 const RegisterForm = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserRegistration>({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
+    resolver: yupResolver(registrationSchema),
+  });
+  const onSubmit: SubmitHandler<UserRegistration> = (data) => console.log(data);
+
   return (
-    <form className={styles.loginForm}>
+    <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles.loginForm__title}>Register</h2>
       <p>
-        Already have an account <Link href={Routes.Login}>Log In!</Link>
+        Already have an account{' '}
+        <Link className={styles.helpLink} href={Routes.Login}>
+          Log In!
+        </Link>
       </p>
 
-      <label>
+      <label className={styles.form__field}>
         Username
-        <TextInput />
+        <Controller
+          name="username"
+          control={control}
+          render={({ field }) => <TextInput {...field} />}
+        />
+        <p className={styles.form__error}>{errors.username?.message}</p>
       </label>
 
-      <label>
+      <label className={styles.form__field}>
         Email
-        <TextInput />
+        <Controller
+          name="email"
+          control={control}
+          render={({ field }) => <TextInput {...field} />}
+        />
+        <p className={styles.form__error}>{errors.email?.message}</p>
       </label>
 
-      <label>
+      <label className={styles.form__field}>
         Password
-        <TextInput type="password" />
+        <Controller
+          name="password"
+          control={control}
+          render={({ field }) => <TextInput type="password" {...field} />}
+        />
+        <p className={styles.form__error}>{errors.password?.message}</p>
       </label>
 
-      <label>
+      <label className={styles.form__field}>
         Repeat Password
-        <TextInput type="password" />
+        <Controller
+          name="repeatPassword"
+          control={control}
+          render={({ field }) => <TextInput type="password" {...field} />}
+        />
+        <p className={styles.form__error}>{errors.repeatPassword?.message}</p>
       </label>
-
-      <Link href="/">Forgot Password</Link>
-      <button>Create Account</button>
+      <Button variant="secondary" type="submit">
+        Create Account
+      </Button>
     </form>
   );
 };
