@@ -1,6 +1,5 @@
-import { ThemeProvider, useTheme } from '@/core/providers/theme-provider';
+import { StoreProvider } from '@/core/providers/store-provider';
 import '@/core/styles/globals.scss';
-import ThemeWrapper from '@/shared/ui/theme-wrapper/theme-wrapper';
 import type { Metadata } from 'next';
 import { Rubik } from 'next/font/google';
 const inter = Rubik({ subsets: ['latin', 'cyrillic'] });
@@ -18,9 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className}`}>
-        <ThemeProvider>
-          <ThemeWrapper>{children}</ThemeWrapper>
-        </ThemeProvider>
+        <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
   );

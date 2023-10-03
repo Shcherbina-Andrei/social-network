@@ -3,16 +3,14 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UserModule } from 'src/users/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
-import { AccessTokenStrategy } from './strategies/accessToken.strategy';
-import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
+import { AccessTokenStrategy } from './strategies/access-token.strategy';
+import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
     UserModule,
+    PassportModule.register({}),
     JwtModule.register({
       global: true,
     }),

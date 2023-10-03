@@ -10,8 +10,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { UserLogin } from '../model/types/authorization';
 import { loginSchema } from '../model/validation-schemas/login-schemas';
+import { useAppDispatch } from '@/shared/lib/hooks/use-app-dispatch';
+import { login } from '../model/services/authorization-services';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const {
     control,
     handleSubmit,
@@ -21,7 +25,17 @@ const LoginForm = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<UserLogin> = (data) => console.log(data);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const onSubmit: SubmitHandler<UserLogin> = (data) => {
+    setErrorMessage('');
+    dispatch(login(data))
+      .unwrap()
+      .then(() => router.push(Routes.Main))
+      .catch((err) => setErrorMessage(err.message));
+  };
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
       <h2 className={styles.loginForm__title}>Log In</h2>
@@ -47,25 +61,14 @@ const LoginForm = () => {
         <Controller
           name="password"
           control={control}
-          render={({ field }) => <TextInput {...field} />}
+          render={({ field }) => <TextInput {...field} type="password" />}
         />
         <p className={styles.form__error}>{errors.password?.message}</p>
       </label>
-
-      <div className={styles.form__innerWrapper}>
-        <label>
-          <Checkbox />
-          Remember Me
-        </label>
-
-        <Link className={styles.helpLink} href="/">
-          Forgot Password?
-        </Link>
-      </div>
+      {errorMessage && <p className={styles.form__error}>{errorMessage}</p>}
       <Button type="submit" variant="secondary">
         Log In
       </Button>
     </form>
   );
 };
-export default LoginForm;

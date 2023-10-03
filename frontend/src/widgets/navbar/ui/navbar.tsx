@@ -11,6 +11,8 @@ import DropdownItem from '@/shared/ui/dropdown/ui/dropdown-item';
 import { Button } from '@/shared/ui/button';
 import { ThemeSwitcher } from '@/widgets/theme-switcher';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/shared/lib/hooks/use-app-dispatch';
+import { logout } from '@/features/authorization';
 
 interface NavbarProps {
   className?: string;
@@ -18,6 +20,12 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = ({ className }) => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    router.push(Routes.Login);
+  };
+
   return (
     <div className={`${styles.wrapper} ${className ? className : ''}`}>
       <nav className={styles.navbar}>
@@ -35,7 +43,7 @@ const Navbar: FC<NavbarProps> = ({ className }) => {
             <NotificationIcon width="30px" height="30px" />
           </Link>
           <Link href={Routes.Profile}>Profile</Link>
-          <Button onClick={() => router.push(Routes.Login)}>Log in</Button>
+          <Button onClick={logoutHandler}>Log out</Button>
         </div>
       </nav>
     </div>

@@ -10,10 +10,9 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 import { User } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AccessTokenGuard } from 'src/common/guards/accessToken.guard';
+import { AccessTokenGuard } from 'src/common/guards/access-token.guard';
 
 @Controller('users')
 export class UserController {
@@ -23,19 +22,19 @@ export class UserController {
     await this.userService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.userService.findById(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AccessTokenGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);

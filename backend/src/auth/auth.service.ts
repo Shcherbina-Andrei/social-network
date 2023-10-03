@@ -1,7 +1,6 @@
 import {
+  BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -20,21 +19,21 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async login(authDto: AuthDto): Promise<any> {
+  async login(authDto: AuthDto) {
     const user = await this.validateUser(authDto);
     const tokens = await this.getTokens(user._id, user.username);
     await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
+    return {
+      user,
+      tokens,
+    };
   }
 
   async registration(userDto: CreateUserDto) {
     const candidate = await this.userService.findByEmail(userDto.email);
 
     if (candidate) {
-      throw new HttpException(
-        'User with this email already exists',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('User already exists');
     }
 
     const hashPassword = await hashData(userDto.password, 5);
@@ -44,7 +43,7 @@ export class AuthService {
     });
     const tokens = await this.getTokens(user._id, user.username);
     await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
+    return { user, tokens };
   }
 
   async logout(userId: string) {
@@ -64,7 +63,7 @@ export class AuthService {
 
     const tokens = await this.getTokens(user._id, user.username);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    return { user, tokens };
   }
 
   async getTokens(userId: string, username: string) {
@@ -100,14 +99,15 @@ export class AuthService {
 
   private async validateUser(authData: AuthDto) {
     const user = await this.userService.findByEmail(authData.email);
-    const passwordEquals = await compareHashedData(
-      authData.password,
-      user.password,
-    );
-    if (user && passwordEquals) {
-      return user;
+    if (user) {
+      const passwordEquals = await compareHashedData(
+        authData.password,
+        user.password,
+      );
+      if (passwordEquals) {
+        return user;
+      }
     }
-
     throw new UnauthorizedException({ message: 'Incorrect email or password' });
   }
 }

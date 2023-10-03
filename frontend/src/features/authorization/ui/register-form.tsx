@@ -9,8 +9,16 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registrationSchema } from '../model/validation-schemas/registration-schema';
 import { UserRegistration } from '../model/types/authorization';
+import { registration } from '../model/services/authorization-services';
+import { useAppDispatch } from '@/shared/lib/hooks/use-app-dispatch';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-const RegisterForm = () => {
+export const RegisterForm = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const [errorMessage, setErrorMessage] = useState('');
+
   const {
     control,
     handleSubmit,
@@ -24,7 +32,12 @@ const RegisterForm = () => {
     },
     resolver: yupResolver(registrationSchema),
   });
-  const onSubmit: SubmitHandler<UserRegistration> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<UserRegistration> = (data) => {
+    dispatch(registration(data))
+      .unwrap()
+      .then(() => router.push(Routes.Main))
+      .catch((err) => setErrorMessage(err.message));
+  };
 
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
@@ -75,10 +88,10 @@ const RegisterForm = () => {
         />
         <p className={styles.form__error}>{errors.repeatPassword?.message}</p>
       </label>
+      {errorMessage && <p className={styles.form__error}>{errorMessage}</p>}
       <Button variant="secondary" type="submit">
         Create Account
       </Button>
     </form>
   );
 };
-export default RegisterForm;

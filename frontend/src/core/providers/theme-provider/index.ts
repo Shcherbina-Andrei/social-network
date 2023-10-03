@@ -1,4 +1,6 @@
-import ThemeProvider from './ui/theme-provider';
-import { useTheme } from './lib/use-theme';
-
-export { ThemeProvider, useTheme };
+export {
+  ThemeContext,
+  Theme,
+  LOCAL_STORAGE_THEME_KEY,
+} from './lib/theme-context';
+export { useTheme } from './lib/use-theme';
